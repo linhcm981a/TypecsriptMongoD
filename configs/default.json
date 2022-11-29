@@ -1,0 +1,17 @@
+{
+  "MONGO_DB_NAME": "NodeJsTypescriptMongoDB",
+  "MONGO_URI": "mongodb://localhost:27017",
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8083,
+    "cors": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+      "Access-Control-Allow-Headers": "Content-Type, x-requested-with, Authorization"
+    }
+  },
+  "serviceName": "NodeJsTypescriptMongoDB",
+  "SWAGGER_BASE_PATH": "/",
+  "timeZone": "+0700",
+  "LOG_LEVEL": "debug"
+}

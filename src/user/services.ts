@@ -27,7 +27,7 @@ export const register = async ({
   logger.error(`user success>>>`, user);
   const token = issueToken({
     id: user.id,
-    mame: user.name,
+    name: user.name,
     email: user.email
   });
   logger.error(` token success>>>`, token);

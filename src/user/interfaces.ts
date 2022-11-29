@@ -22,3 +22,8 @@ export interface IUserToBeCreated {
   password: string;
   salt: string;
 }
+
+export interface IAuthUser extends IUser {
+  password?: string;
+  salt?: string;
+}

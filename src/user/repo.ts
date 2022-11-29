@@ -1,7 +1,7 @@
 import { IUser } from './interfaces';
 import { UserDocument, UserModel } from './model';
 import logger from '../logger';
-import { IUserToBeCreated } from './interfaces';
+import { IUserToBeCreated, IAuthUser } from './interfaces';
 
 export const documentToObject = (document: UserDocument) => {
   const user = document.toObject({ getters: true }) as any;
@@ -10,6 +10,8 @@ export const documentToObject = (document: UserDocument) => {
 
   return user as IUser;
 };
+export const documentToObjectWithSensitiveData = (document: UserDocument) =>
+  document.toObject({ getters: true }) as IAuthUser;
 
 export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   try {
@@ -27,6 +29,18 @@ export const createUser = async (payload: IUserToBeCreated): Promise<any> => {
     return user && documentToObject(user);
   } catch (error) {
     logger.error('Create User DB Error>>>', error);
+    throw error;
+  }
+};
+
+export const getAuthByEmail = async (
+  email: string
+): Promise<IAuthUser | null> => {
+  try {
+    const user = await UserModel.findOne({ email });
+    return user && documentToObjectWithSensitiveData(user);
+  } catch (error) {
+    logger.error('Find User DB Error>>>', error);
     throw error;
   }
 };

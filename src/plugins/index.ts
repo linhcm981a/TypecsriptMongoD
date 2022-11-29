@@ -5,6 +5,7 @@ import swagger from './swagger';
 import good from './good';
 import responseWrapper from './responseWrapper';
 import requestWrapper from './requestWrapper';
+import jwt from 'hapi-auth-jwt2';
 
 const plugins: Hapi.ServerRegisterPluginObject<any>[] = [
   {
@@ -12,6 +13,9 @@ const plugins: Hapi.ServerRegisterPluginObject<any>[] = [
   },
   {
     plugin: Vision
+  },
+  {
+    plugin: jwt
   },
   good,
   swagger,

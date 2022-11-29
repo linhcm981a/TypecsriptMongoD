@@ -10,49 +10,9 @@ export const ErrorList: IErrorList = {
     statusCode: StatusCode.NOT_FOUND,
     message: 'Not found'
   },
-  [ERROR_CODE.INVALID_REQUEST]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Invalid request'
-  },
-  [ERROR_CODE.UNEXPECTED_ERROR]: {
-    statusCode: StatusCode.INTERNAL_SERVER_ERROR,
-    message: 'We caught unexpected error'
-  },
-  [ERROR_CODE.INCORRECT_FIELD]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Incorrect field'
-  },
-  [ERROR_CODE.INTERNAL_SERVER_ERROR]: {
-    statusCode: StatusCode.INTERNAL_SERVER_ERROR,
-    message: 'Incorrect field'
-  },
   [ERROR_CODE.EMAIL_EXISTS]: {
     statusCode: StatusCode.BAD_REQUEST,
     message: 'Email was existed'
-  },
-  [ERROR_CODE.PHONE_NUMBER_EXISTS]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Phone number was existed'
-  },
-  [ERROR_CODE.SIGNATURE_VALIDATION_EXISTS]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Signature was existed'
-  },
-  [ERROR_CODE.INVALID_MANDATORY_FIELDS]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Invalid the mandatory fields'
-  },
-  [ERROR_CODE.VERIFY_CODE_WAS_EXPIRED]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Verify code was expired'
-  },
-  [ERROR_CODE.EMAIL_WAS_VERIFIED]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Email was verified'
-  },
-  [ERROR_CODE.PHONE_NUMBER_OR_EMAIL_IN_BLACKLISTED]: {
-    statusCode: StatusCode.BAD_REQUEST,
-    message: 'Phone number or email in blacklisted'
   }
 };
 

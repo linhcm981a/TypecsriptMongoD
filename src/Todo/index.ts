@@ -10,6 +10,7 @@ const createTodo: Hapi.ServerRoute = {
   method: Method.POST,
   path: '/todo',
   options: {
+    auth: 'jwt',
     description: 'Create todo',
     tags: ['api', 'todo'],
     validate: {

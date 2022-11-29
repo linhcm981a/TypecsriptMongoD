@@ -5,7 +5,10 @@ import { routes } from './routes';
 import { get } from './config';
 import logger from './logger';
 import { connectMongo } from './common/mongoDb';
+import dotenv from 'dotenv';
+import { verifyToken } from './services/auth';
 
+dotenv.config();
 const { port, host } = get('server');
 
 const createServer = async () => {
@@ -26,6 +29,13 @@ const createServer = async () => {
   // Register plugins
   await server.register(plugins);
 
+  server.auth.strategy('jwt', 'jwt', {
+    key: process.env.JWT_SECRET_KEY,
+    validate: verifyToken,
+    verifyOptions: { algorithms: ['HS256'] }
+  });
+
+  server.auth.default('jwt');
   // Register routes
   server.route(routes);
 

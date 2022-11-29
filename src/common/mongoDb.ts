@@ -4,7 +4,6 @@ import logger from '../logger';
 
 export const connectMongo = () =>
   new Promise<void>((resolve, reject) => {
-    const dbName = config.get('MONGO_DB_NAME');
     const dbUri = config.get('MONGO_URI');
     connection.once('open', () => resolve());
     connection.on('error', (err: any) => {
@@ -12,7 +11,5 @@ export const connectMongo = () =>
       reject(err);
     });
 
-    connect(dbUri, {
-      dbName
-    });
+    connect(dbUri);
   });

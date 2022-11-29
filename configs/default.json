@@ -1,9 +1,9 @@
 {
   "MONGO_DB_NAME": "NodeJsTypescriptMongoDB",
-  "MONGO_URI": "mongodb://localhost:27017",
+  "MONGO_URI": "mongodb+srv://linh:linh@cluster0.jamfexy.mongodb.net/?retryWrites=true&w=majority",
   "server": {
     "host": "0.0.0.0",
-    "port": 8083,
+    "port": 3000,
     "cors": {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",

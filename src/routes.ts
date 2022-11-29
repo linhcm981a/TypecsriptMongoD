@@ -1,5 +1,5 @@
-import channel from './channel';
+import todo from './todo';
 
-const routes = [...channel];
+const routes = [...todo];
 
 export { routes };

@@ -1,10 +1,12 @@
 import { connect, connection } from 'mongoose';
-import * as config from '../config';
 import logger from '../logger';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const connectMongo = () =>
   new Promise<void>((resolve, reject) => {
-    const dbUri = config.get('MONGO_URI');
+    const dbUri = process.env.MONGO_URI || '';
     connection.once('open', () => resolve());
     connection.on('error', (err: any) => {
       logger.error('error while connecting to mongodb', err);

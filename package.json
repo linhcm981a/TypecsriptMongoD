@@ -9,13 +9,7 @@
     "lint:fix": "eslint ./src/**/*.ts --fix",
     "watch-node": "nodemon dist/src/server.js",
     "dev:watch": "nodemon --watch src -e ts --exec npm run start",
-    "dev:debug": "nodemon --inspect src/server.ts",
-    "start": "node dist/src/server.js",
-    "migrate:up": "migrate-mongo up",
-    "migrate:down": "migrate-mongo down",
-    "migrate:create": "migrate-mongo create",
-    "build": "tsc",
-    "release": "standard-version"
+    "start": "node dist/src/server.js"
   },
   "keywords": [
     "service",

@@ -1,4 +1,5 @@
 import Hapi from '@hapi/hapi';
+import { SortFieldEnum, SortTypeEnum } from '../common/enums';
 
 export interface ICreateChannelRequest extends Hapi.Request {
   payload: ICreateTodoPayload;
@@ -19,4 +20,27 @@ export interface ITodo {
   updatedBy: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface IGetListRequest extends Hapi.Request {
+  query: IGetListQueryParams;
+}
+export interface IGetListQueryParams {
+  keyword?: string;
+  limit?: number;
+  page?: number;
+  sortField?: SortFieldEnum;
+  sortType?: SortTypeEnum;
+}
+
+export interface IGetListTodoResponse {
+  items: ITodo[];
+  pagination: IPagination;
+}
+
+export interface IPagination {
+  page: number;
+  totalPages: number;
+  totalItems: number;
+  limit: number;
 }

@@ -8,4 +8,3 @@
 
 
 Swagger API is at http://localhost:3000/documentation
-# TypecsriptMongoD

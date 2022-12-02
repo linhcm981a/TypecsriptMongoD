@@ -15,6 +15,13 @@ const TodoSchema = new Schema(
     },
     description: {
       type: String
+    },
+    createdBy: {
+      type: String,
+      required: true
+    },
+    updatedBy: {
+      type: String
     }
   },
   {

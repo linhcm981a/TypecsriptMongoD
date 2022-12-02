@@ -1,4 +1,4 @@
-import { ITodo } from './interfaces';
+import { ITodo, IGetListTodoResponse } from './interfaces';
 
 const mapBaseTodo = (data: ITodo): any => {
   return {
@@ -11,3 +11,8 @@ const mapBaseTodo = (data: ITodo): any => {
 export const mapCreateTodoResponse = (data: ITodo): any => ({
   ...mapBaseTodo(data)
 });
+
+export const mapListTodoResponse = (result: IGetListTodoResponse): any => {
+  result.items = result.items.map(document => mapBaseTodo(document));
+  return result;
+};

@@ -44,3 +44,11 @@ export interface IPagination {
   totalItems: number;
   limit: number;
 }
+
+export interface IGetTodoDetailParameter {
+  id: string;
+}
+
+export interface IGetTodoDetailRequest extends Hapi.Request {
+  parameter: IGetTodoDetailParameter;
+}

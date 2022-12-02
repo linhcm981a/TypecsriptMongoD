@@ -16,3 +16,7 @@ export const mapListTodoResponse = (result: IGetListTodoResponse): any => {
   result.items = result.items.map(document => mapBaseTodo(document));
   return result;
 };
+
+export const mapGetTodoDetailResponse = (result: ITodo): any => {
+  return mapBaseTodo(result);
+};

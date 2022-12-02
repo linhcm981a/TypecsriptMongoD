@@ -1,4 +1,5 @@
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 import * as constants from '../constants';
 import { SortFieldEnum, SortTypeEnum } from '../common/enums';
 
@@ -22,4 +23,8 @@ export const getListQueryValidator = Joi.object({
   sortType: Joi.string()
     .allow(null, '')
     .valid(...Object.values(SortTypeEnum))
+});
+
+export const todoIdParamValidator = Joi.object({
+  todoId: Joi.objectId().required()
 });

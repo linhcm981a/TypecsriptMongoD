@@ -60,3 +60,13 @@ export const countByParameter = async (
 
   return countTotal;
 };
+
+export const getTodoDetailById = async (id: string): Promise<ITodo | null> => {
+  try {
+    const todo = await TodoModel.findById(id);
+    return todo && documentToObject(todo);
+  } catch (e) {
+    logger.error('get todo By Id Error>>>', e);
+    throw e;
+  }
+};

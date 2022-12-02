@@ -53,3 +53,9 @@ export const getListTodoByParameter = async (
 
   return result;
 };
+
+export const getTodoDetailById = async (id: string): Promise<ITodo | null> => {
+  logger.info('Get Todo By Id ', id);
+
+  return repo.getTodoDetailById(id);
+};

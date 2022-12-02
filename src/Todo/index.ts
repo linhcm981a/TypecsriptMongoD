@@ -1,13 +1,27 @@
 import Hapi from '@hapi/hapi';
 import { Method, StatusCode } from '../enums/http';
-import { ICreateChannelRequest, IGetListRequest } from './interfaces';
+import {
+  ICreateChannelRequest,
+  IGetListRequest,
+  IGetTodoDetailRequest
+} from './interfaces';
 import {
   createTodoPayloadValidator,
-  getListQueryValidator
+  getListQueryValidator,
+  todoIdParamValidator
 } from './validators';
 import * as services from './services';
-import { baseTodoResponse, listTodoResponse } from './__mocks__/data';
-import { mapCreateTodoResponse, mapListTodoResponse } from './presenter';
+import {
+  baseTodoResponse,
+  listTodoResponse,
+  baseTodoResponseAdmin
+} from './__mocks__/data';
+import {
+  mapCreateTodoResponse,
+  mapListTodoResponse,
+  mapGetTodoDetailResponse
+} from './presenter';
+import logger from '../logger';
 
 const createTodo: Hapi.ServerRoute = {
   method: Method.POST,
@@ -90,6 +104,59 @@ const getListTodo: Hapi.ServerRoute = {
   }
 };
 
-const todoHandlers: Hapi.ServerRoute[] = [createTodo, getListTodo];
+const getTodoDetail: Hapi.ServerRoute = {
+  method: Method.GET,
+  path: '/todo/{todoId}',
+  options: {
+    auth: 'jwt',
+    description: 'Get Todo Detail',
+    tags: ['api', 'todo'],
+    validate: {
+      params: todoIdParamValidator
+    },
+    handler: async (
+      hapiRequest: IGetTodoDetailRequest,
+      hapiResponse: Hapi.ResponseToolkit
+    ) => {
+      const {
+        params: { todoId }
+      } = hapiRequest;
+      const todo = await services.getTodoDetailById(todoId);
+      if (!todo) {
+        logger.error('Todo with todoId ' + todoId + ' not found');
+        return hapiResponse.response(undefined).code(StatusCode.NOT_FOUND);
+      }
+      return hapiResponse
+        .response(mapGetTodoDetailResponse(todo))
+        .code(StatusCode.OK);
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          [StatusCode.OK]: {
+            description: 'Get Todo Detail successfully',
+            schema: {
+              properties: {
+                data: {
+                  type: 'object',
+                  example: baseTodoResponseAdmin
+                }
+              }
+            }
+          },
+          [StatusCode.NOT_FOUND]: {
+            description: 'Todo with ID not found'
+          }
+        }
+      }
+    }
+  }
+};
+
+const todoHandlers: Hapi.ServerRoute[] = [
+  createTodo,
+  getListTodo,
+  getTodoDetail
+];
 
 export default todoHandlers;

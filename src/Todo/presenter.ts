@@ -20,3 +20,7 @@ export const mapListTodoResponse = (result: IGetListTodoResponse): any => {
 export const mapGetTodoDetailResponse = (result: ITodo): any => {
   return mapBaseTodo(result);
 };
+
+export const mapUpdateTodoResponse = (result: any): any => {
+  return result;
+};

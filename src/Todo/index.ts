@@ -3,25 +3,30 @@ import { Method, StatusCode } from '../enums/http';
 import {
   ICreateChannelRequest,
   IGetListRequest,
-  IGetTodoDetailRequest
+  IGetTodoDetailRequest,
+  IUpdateTodoPayload
 } from './interfaces';
 import {
   createTodoPayloadValidator,
   getListQueryValidator,
-  todoIdParamValidator
+  todoIdParamValidator,
+  updateTodoPayloadValidator
 } from './validators';
 import * as services from './services';
 import {
   baseTodoResponse,
   listTodoResponse,
-  baseTodoResponseAdmin
+  getTodoDetailResponse,
+  updateTodoResponse
 } from './__mocks__/data';
 import {
   mapCreateTodoResponse,
   mapListTodoResponse,
-  mapGetTodoDetailResponse
+  mapGetTodoDetailResponse,
+  mapUpdateTodoResponse
 } from './presenter';
 import logger from '../logger';
+import { getAuthorizerId } from '../utils/authHelper';
 
 const createTodo: Hapi.ServerRoute = {
   method: Method.POST,
@@ -37,7 +42,10 @@ const createTodo: Hapi.ServerRoute = {
       hapiRequest: ICreateChannelRequest,
       hapiResponse: Hapi.ResponseToolkit
     ) => {
-      const todo = await services.createTodo(hapiRequest.payload);
+      const todo = await services.createTodo(
+        hapiRequest.payload,
+        getAuthorizerId(hapiRequest)
+      );
       return hapiResponse
         .response(mapCreateTodoResponse(todo))
         .code(StatusCode.OK);
@@ -139,7 +147,7 @@ const getTodoDetail: Hapi.ServerRoute = {
               properties: {
                 data: {
                   type: 'object',
-                  example: baseTodoResponseAdmin
+                  example: getTodoDetailResponse
                 }
               }
             }
@@ -153,10 +161,61 @@ const getTodoDetail: Hapi.ServerRoute = {
   }
 };
 
+const updateTodoById: Hapi.ServerRoute = {
+  method: Method.PUT,
+  path: '/todo/{todoId}',
+  options: {
+    auth: 'jwt',
+    description: 'Update todo',
+    tags: ['api', 'todo'],
+    validate: {
+      params: todoIdParamValidator,
+      payload: updateTodoPayloadValidator
+    },
+    handler: async (
+      hapiRequest: Hapi.Request,
+      hapiResponse: Hapi.ResponseToolkit
+    ) => {
+      const {
+        params: { todoId },
+        payload
+      }: any = hapiRequest;
+      const authorizerId = await getAuthorizerId(hapiRequest);
+      const todo = await services.updateTodoById(
+        todoId,
+        payload as IUpdateTodoPayload,
+        authorizerId
+      );
+
+      return hapiResponse
+        .response(mapUpdateTodoResponse(todo))
+        .code(StatusCode.OK);
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          [StatusCode.OK]: {
+            description: 'Update Todo success',
+            schema: {
+              properties: {
+                data: {
+                  type: 'object',
+                  example: updateTodoResponse
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 const todoHandlers: Hapi.ServerRoute[] = [
   createTodo,
   getListTodo,
-  getTodoDetail
+  getTodoDetail,
+  updateTodoById
 ];
 
 export default todoHandlers;

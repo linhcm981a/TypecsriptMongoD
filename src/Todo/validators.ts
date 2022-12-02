@@ -28,3 +28,8 @@ export const getListQueryValidator = Joi.object({
 export const todoIdParamValidator = Joi.object({
   todoId: Joi.objectId().required()
 });
+
+export const updateTodoPayloadValidator = Joi.object({
+  name: Joi.string().required(),
+  description: Joi.string().allow(null, '')
+});

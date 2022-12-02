@@ -2,4 +2,6 @@ export const baseTodoResponse = {};
 
 export const listTodoResponse = {};
 
-export const baseTodoResponseAdmin = {};
+export const getTodoDetailResponse = {};
+
+export const updateTodoResponse = {};

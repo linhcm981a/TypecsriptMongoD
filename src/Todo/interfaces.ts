@@ -52,3 +52,10 @@ export interface IGetTodoDetailParameter {
 export interface IGetTodoDetailRequest extends Hapi.Request {
   parameter: IGetTodoDetailParameter;
 }
+
+export interface IUpdateTodoPayload {
+  name: string;
+  description?: string;
+  createdBy: string;
+  updatedBy: string;
+}

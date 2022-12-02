@@ -1,5 +1,10 @@
-import { TodoDocument } from './../Todo/model';
-import { ICreateTodoPayload, ITodo, IGetListQueryParams } from './interfaces';
+import { TodoDocument } from './model';
+import {
+  ICreateTodoPayload,
+  ITodo,
+  IGetListQueryParams,
+  IUpdateTodoPayload
+} from './interfaces';
 import logger from '../logger';
 import { TodoModel } from './model';
 import { IPaginationParams } from '../common/interfaces';
@@ -13,12 +18,15 @@ export const documentToArray = (documents: TodoDocument[]) =>
   documents.map(document => documentToObject(document));
 
 export const createTodo = async (
-  payload: ICreateTodoPayload
+  payload: ICreateTodoPayload,
+  authorizerId: string
 ): Promise<ITodo> => {
   try {
     logger.info('todo to be created', payload);
     const todoToBeCreated = {
-      ...payload
+      ...payload,
+      createdBy: authorizerId,
+      updatedBy: authorizerId
     };
 
     const todo = await TodoModel.create(todoToBeCreated);
@@ -68,5 +76,26 @@ export const getTodoDetailById = async (id: string): Promise<ITodo | null> => {
   } catch (e) {
     logger.error('get todo By Id Error>>>', e);
     throw e;
+  }
+};
+
+export const updateTodoById = async (
+  todoId: string,
+  payload: IUpdateTodoPayload
+): Promise<ITodo | null> => {
+  try {
+    const todoToBeUpdated = await TodoModel.findOneAndUpdate(
+      {
+        _id: todoId
+      },
+      {
+        $set: payload
+      },
+      { new: true }
+    );
+    return todoToBeUpdated && documentToObject(todoToBeUpdated);
+  } catch (error) {
+    logger.error('update todo DB Error>>>', error);
+    throw error;
   }
 };

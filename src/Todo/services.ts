@@ -1,20 +1,25 @@
 import {
   ICreateTodoPayload,
   IGetListQueryParams,
-  IGetListTodoResponse
+  IGetListTodoResponse,
+  IUpdateTodoPayload
 } from './interfaces';
 import logger from '../logger';
 import { ITodo } from './interfaces';
 import * as repo from './repo';
+import * as todoServices from './services';
 import { IPaginationParams } from '../common/interfaces';
 import { createPaginationParams, createPagination } from '../utils/pagination';
+import { AppError } from '../common/appError';
+import { ERROR_CODE } from '../enums/error';
 
 export const createTodo = async (
-  payload: ICreateTodoPayload
+  payload: ICreateTodoPayload,
+  authorizerId: string
 ): Promise<ITodo> => {
   logger.info('Create todo payload:', payload);
 
-  return await repo.createTodo(payload);
+  return await repo.createTodo(payload, authorizerId);
 };
 
 export const getListTodoByParameter = async (
@@ -58,4 +63,23 @@ export const getTodoDetailById = async (id: string): Promise<ITodo | null> => {
   logger.info('Get Todo By Id ', id);
 
   return repo.getTodoDetailById(id);
+};
+
+export const updateTodoById = async (
+  todoId: string,
+  payload: IUpdateTodoPayload,
+  authorizerId: string
+): Promise<ITodo | null> => {
+  const todo = await todoServices.getTodoDetailById(todoId);
+  if (!todo) {
+    logger.error(`Todo with todoId ${todoId} does not exist`);
+    throw new AppError(ERROR_CODE.NOT_FOUND);
+  }
+  if (todo.createdBy != authorizerId) {
+    logger.error(`todo with todoId ${todoId} does not belong to user`);
+    throw new AppError(ERROR_CODE.PERMISSION_DENIED);
+  }
+  const updateTodo = await repo.updateTodoById(todoId, payload);
+  logger.debug('Todo updated: ', updateTodo);
+  return updateTodo;
 };

@@ -83,3 +83,12 @@ export const updateTodoById = async (
   logger.debug('Todo updated: ', updateTodo);
   return updateTodo;
 };
+
+export const deleteTodoById = async (todoId: string): Promise<ITodo | null> => {
+  const getTodoById = await todoServices.getTodoDetailById(todoId);
+  logger.info('getTodoById: ', getTodoById);
+  const deleteTodoById = await repo.deleteTodoById(todoId);
+  logger.info('todoDeleted: ', deleteTodoById);
+
+  return deleteTodoById;
+};

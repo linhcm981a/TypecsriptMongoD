@@ -24,3 +24,5 @@ export const mapGetTodoDetailResponse = (result: ITodo): any => {
 export const mapUpdateTodoResponse = (result: any): any => {
   return result;
 };
+
+export const mapDeleteTodoResponse = (row: any) => row;

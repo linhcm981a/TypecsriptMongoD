@@ -10,20 +10,23 @@ import {
   createTodoPayloadValidator,
   getListQueryValidator,
   todoIdParamValidator,
-  updateTodoPayloadValidator
+  updateTodoPayloadValidator,
+  deleteTodoPayloadValidator
 } from './validators';
 import * as services from './services';
 import {
   baseTodoResponse,
   listTodoResponse,
   getTodoDetailResponse,
-  updateTodoResponse
+  updateTodoResponse,
+  baseDeleteTodoResponse
 } from './__mocks__/data';
 import {
   mapCreateTodoResponse,
   mapListTodoResponse,
   mapGetTodoDetailResponse,
-  mapUpdateTodoResponse
+  mapUpdateTodoResponse,
+  mapDeleteTodoResponse
 } from './presenter';
 import logger from '../logger';
 import { getAuthorizerId } from '../utils/authHelper';
@@ -211,11 +214,51 @@ const updateTodoById: Hapi.ServerRoute = {
   }
 };
 
+const deleteTodo: Hapi.ServerRoute = {
+  method: Method.DELETE,
+  path: '/todo/{todoId}',
+  options: {
+    auth: 'jwt',
+    description: 'Delete todo',
+    tags: ['api', 'todo'],
+    validate: {
+      params: deleteTodoPayloadValidator
+    },
+    handler: async (
+      hapiRequest: Hapi.Request,
+      hapiResponse: Hapi.ResponseToolkit
+    ) => {
+      const todo = await services.deleteTodoById(hapiRequest.params.todoId);
+      return hapiResponse
+        .response(mapDeleteTodoResponse(todo))
+        .code(StatusCode.OK);
+    },
+    plugins: {
+      'hapi-swagger': {
+        responses: {
+          [StatusCode.OK]: {
+            description: 'Delete todo successfully',
+            schema: {
+              properties: {
+                data: {
+                  type: 'object',
+                  example: baseDeleteTodoResponse
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 const todoHandlers: Hapi.ServerRoute[] = [
   createTodo,
   getListTodo,
   getTodoDetail,
-  updateTodoById
+  updateTodoById,
+  deleteTodo
 ];
 
 export default todoHandlers;

@@ -99,3 +99,14 @@ export const updateTodoById = async (
     throw error;
   }
 };
+
+export const deleteTodoById = async (todoId: string): Promise<ITodo | null> => {
+  try {
+    const todo = await TodoModel.findOneAndDelete({ _id: todoId });
+
+    return todo && documentToObject(todo);
+  } catch (error) {
+    logger.error('deleteTodoById DB Error>>>', error);
+    throw error;
+  }
+};

@@ -5,3 +5,5 @@ export const listTodoResponse = {};
 export const getTodoDetailResponse = {};
 
 export const updateTodoResponse = {};
+
+export const baseDeleteTodoResponse = {};

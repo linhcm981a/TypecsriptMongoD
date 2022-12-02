@@ -33,3 +33,7 @@ export const updateTodoPayloadValidator = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().allow(null, '')
 });
+
+export const deleteTodoPayloadValidator = Joi.object({
+  todoId: Joi.objectId().required()
+});
